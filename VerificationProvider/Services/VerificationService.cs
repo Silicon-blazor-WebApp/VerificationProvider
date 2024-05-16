@@ -56,28 +56,28 @@ namespace VerificationProvider.Services
                         To = verificationRequest.Email,
                         Subject = $"Verification Code {code}",
                         HtmlBody = $@"
-                       <html lang='en'>
-                        <head>
-                            <meta charset='UTF-8'>
-                            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-                            <title></title>
-                        </head>
-                        <body>
-                          <div style='border: 1px solid #9397AD; width: 30rem;'>
-                            <div style='background-color: #4C82F7; padding: 2rem;'>
-                              <h1 style='color: #F3F6FF; display: flex; justify-content: center; align-items: center;' >Verification Code</h1>
-                            </div>
-                            <div style='padding: 3rem; display: flex; flex-direction: column; align-items: center;'>
-                              <p style='text-align: center;'>We have received a request to sign in to your account using email {verificationRequest.Email} </p>
-                              <h3 style='margin: 1rem;'>Verification Code:</h3>
-                              <h1 style='margin: 0; letter-spacing: 10px; background-color: #9397AD; color: #ffffff; padding: 1rem; border-radius: 10px;'>{code}</h1>
-                              <p style='margin-top: 2rem; text-align: center;'>To complete the verification process, simply enter this code when prompted. If you did not initiate this request, please contact our support team immediately.</p>
-                              <p>&copy; 2024 Silicon. All rights reserverd.</p>
-                            </div>
-                          </div>
-                        </body>
-                       </html>",
-                        PlainText = $"We have received a request to sign in to your account using email {verificationRequest.Email}. Please verify your account using this code: {code}",
+                            <html lang='en'>
+                              <head>
+                                  <meta charset='UTF-8'>
+                                  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                                  <title></title>
+                              </head>
+                              <body>
+                                <div style='border: 1px solid #9397AD; width: 30rem;'>
+                                  <div style='background-color: #4C82F7; padding: 2rem;'>
+                                    <h1 style='color: #F3F6FF; text-align: center;'>Verification Code</h1>
+                                  </div>
+                                  <div style='padding: 3rem; text-align: center;'>
+                                    <p style='text-align: center;'>We have recived a request to sign in to your account using e-mail: {verificationRequest.Email} </p>
+                                    <h3 style='margin: 1rem;'>Verification Code:</h3>
+                                    <h1 style='margin: 0; letter-spacing: 10px; background-color: #9397AD; color: #ffffff; padding: 1rem; border-radius: 10px;'>{code}</h1>
+                                    <p style='margin-top: 2rem; text-align: center;'>To complete the verification process, simply enter this code when prompted. If you did not initiate this request, please contact our support team immediately.</p>
+                                    <p>&copy; 2024 Silicon. All rights reserverd.</p>
+                                  </div>
+                                </div>
+                              </body>
+                             </html>"
+                           
                     };
                     return emailRequest;
                 }

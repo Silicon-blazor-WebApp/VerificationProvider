@@ -1,3 +1,4 @@
+using Azure.Messaging.ServiceBus;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +14,7 @@ var host = new HostBuilder()
         services.AddApplicationInsightsTelemetryWorkerService();
         services.ConfigureFunctionsApplicationInsights();
         services.AddDbContext<DataContext>(x => x.UseSqlServer(Environment.GetEnvironmentVariable("VerificationRequestDatabase")));
+        services.AddSingleton(new ServiceBusClient(Environment.GetEnvironmentVariable("ServiceBusConnection")));
         services.AddScoped<IVerificationService, VerificationService>();
         services.AddScoped<IVerificationCleanerService, VerificationCleanerService>();
         services.AddScoped<IValidateVerificationCodeService, ValidateVerificationCodeService>();

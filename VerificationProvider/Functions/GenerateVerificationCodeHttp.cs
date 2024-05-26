@@ -1,3 +1,4 @@
+using Azure.Messaging.ServiceBus;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
@@ -8,10 +9,12 @@ using VerificationProvider.Services;
 
 namespace VerificationProvider.Functions
 {
-    public class GenerateVerificationCodeHttp(ILogger<GenerateVerificationCodeHttp> logger, IVerificationService verificationService)
+    public class GenerateVerificationCodeHttp(ILogger<GenerateVerificationCodeHttp> logger, IVerificationService verificationService, ServiceBusClient serviceBusClient)
     {
         private readonly ILogger<GenerateVerificationCodeHttp> _logger = logger;
         private readonly IVerificationService _verificationService = verificationService;
+        private readonly ServiceBusClient _serviceBusClient = serviceBusClient;
+        private readonly string _queueName = "email_request";
 
         [Function("GenerateVerificationCodeHttp")]
         public async Task<IActionResult> Run(
@@ -39,6 +42,7 @@ namespace VerificationProvider.Functions
                             var payload = _verificationService.GenerateServiceBusEmailRequest(emailRequest);
                             if (!string.IsNullOrEmpty(payload))
                             {
+                                await SendMessageToServiceBus(payload);
                                 return new OkObjectResult($"Verification code sent to {verificationRequest.Email}");
                             }
                         }
@@ -52,6 +56,13 @@ namespace VerificationProvider.Functions
             }
 
             return null!;
+        }
+
+        private async Task SendMessageToServiceBus(string payload)
+        {
+            ServiceBusSender sender = _serviceBusClient.CreateSender(_queueName);
+            ServiceBusMessage message = new ServiceBusMessage(payload);
+            await sender.SendMessageAsync(message);
         }
     }
 }
